@@ -1,0 +1,8 @@
+/.vscode
+/build/**
+build/**
+devel/**
+examples/build/**
+examples/devel/**
+examples/devel
+examples/build

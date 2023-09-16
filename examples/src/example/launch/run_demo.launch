@@ -1,0 +1,11 @@
+<launch>
+
+  <!-- 启动RViz节点 -->
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find example)/config/rviz.rviz" output="screen"/>
+
+  <!-- 启动你的节点 -->
+  <node name="example_node" pkg="example" type="main_node" output="screen">
+    <!-- 添加任何参数或命名空间设置 -->
+  </node>
+
+</launch>
