@@ -297,7 +297,11 @@ LiTouch端的API包括：
 
 -- getComponentbyName(name) 通过名称获取组件
 
--- getComponentvbyCid(cid) 通过cid获取组件，假设你想要让一个Label的内容经常变动，那么通过名称获取组件显然不是一个明知的方法。
+-- getComponentvbyCid(cid) 通过cid获取组件，假设你想要让一个Label的内容经常变动，那么通过名称获取组件显然不是一个明智的方法。
+
+-- printToTerminal(name, content) 向名字为name的迷你终端发送内容
+
+-- launchLiTouch(ui_conf_path) 使用指定配置文件启动LiTouch，如果不传递参数，则使用默认配置。
 
 除了LiTouch端提供的API，Livz也提供了一些API来负责C++部分与LiTouch的交互，这些API包括：
 
