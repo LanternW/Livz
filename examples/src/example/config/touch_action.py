@@ -22,6 +22,7 @@ def button1_callback():
 def button2_callback():
     print("清除所有已发布内容")
     interface.pubLiTouchCmd(7)
+    interface.launchLiTouch()
 
 def slider_callback( value ):
     interface.pubLiTouchCmd(8, [value] )

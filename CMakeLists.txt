@@ -68,4 +68,9 @@ install(DIRECTORY include/
 
 # 安装LivzTouch
 install(DIRECTORY LiTouch/
-        DESTINATION lib/LiTouch)
+DESTINATION lib/LiTouch)
+
+install(FILES LiTouch/config/default_action.py
+  DESTINATION lib/LiTouch/config
+  PERMISSIONS OWNER_WRITE OWNER_READ GROUP_WRITE GROUP_READ WORLD_WRITE WORLD_READ
+)

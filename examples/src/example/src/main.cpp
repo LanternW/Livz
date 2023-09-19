@@ -46,7 +46,7 @@ void litouchAction(const int cmd_id, const std::vector<double> params)
 int main(int argc, char** argv) {
 
     // LiTouch ，启动 ！
-    Livz::launchLiTouch("/home/lantern/ROS_workspace/LivzWithTouch/examples/src/example/config/touch_layout.json");
+    Livz::launchLiTouch("/home/lantern/Livz/examples/src/example/config/touch_layout.json");
 
     // 重新设置litouch_cmd的响应函数，litouch_cmd由python中interface.pubLiTouchCmd发布
     Livz::setLitouchAction(litouchAction);

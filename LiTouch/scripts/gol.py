@@ -38,7 +38,7 @@ class Gol():
         self.DEFAULT_CONFIG_PATH = os.path.join(script_dir, "../config/default.json")
         self.CONFIG_PATH         = self.DEFAULT_CONFIG_PATH
 
-        self.DEFAULT_CALLBACK_PATH = "test_callback/callback.py"
+        self.DEFAULT_CALLBACK_PATH = "config/default_action.py"
         self.CALLBACK_PATH         = self.DEFAULT_CALLBACK_PATH
 
         self.TEMPLATE_CONFIG_PATH   = os.path.join(script_dir, "../config/layout_template.json")

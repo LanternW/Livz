@@ -1,6 +1,6 @@
 {
     "UI": {
-        "action_code": "/home/lantern/ROS_workspace/LivzWithTouch/examples/src/example/config/touch_action.py",
+        "action_code": "/home/lantern/Livz/examples/src/example/config/touch_action.py",
         "window": {
             "title": "LiTouch",
             "width": 800,

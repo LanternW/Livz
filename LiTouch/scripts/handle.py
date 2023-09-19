@@ -240,6 +240,7 @@ def checkAndReadConfig():
                 existing_functions[node.name] = [arg.arg for arg in node.args.args]
         missing_functions = {}
 
+
         for func_name, params in required_funcs.items():
             if func_name not in existing_functions:
                 missing_functions[func_name] = params
@@ -255,11 +256,11 @@ def checkAndReadConfig():
         if missing_func_count > 0:
             print_color("[Litouch] 发现" + str(missing_func_count) + "个缺失的回调函数，已补全， 请打开action code编写回调功能", "yellow")
  
-        
         readConfig()
 
     except Exception as e:
         print_color("[Litouch] Error occurred : " + type(e).__name__ , "red")
+
 
 def saveConfig():
     components_data = []
