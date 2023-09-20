@@ -41,6 +41,8 @@ class Gol():
         self.DEFAULT_CALLBACK_PATH = "config/default_action.py"
         self.CALLBACK_PATH         = self.DEFAULT_CALLBACK_PATH
 
+        self.REL_CBK_PATH = ""
+
         self.TEMPLATE_CONFIG_PATH   = os.path.join(script_dir, "../config/layout_template.json")
         self.TEMPLATE_CALLBACK_PATH = os.path.join(script_dir, "../config/action_template.py")
         self.FONT_PATH              = os.path.join(script_dir, "./fonts/Monaco-1.ttf")

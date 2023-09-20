@@ -147,9 +147,10 @@ def scanAllActionFuncs():
     with open(gol.CONFIG_PATH, 'r', encoding='utf-8') as f:
         data    = json.load(f)
         ui_data = data["UI"]
+        gol.REL_CBK_PATH = ui_data["action_code"]
 
         config_dir = os.path.dirname(gol.CONFIG_PATH)
-        gol.CALLBACK_PATH    = config_dir + "/" + ui_data["action_code"]
+        gol.CALLBACK_PATH    = config_dir + "/" + gol.REL_CBK_PATH
         if (gol.CALLBACK_PATH == "config/default_action.py"):
             script_dir = os.path.dirname(os.path.abspath(__file__))
             gol.CALLBACK_PATH = os.path.join(script_dir, "../config/default_action.py")
@@ -169,9 +170,10 @@ def readConfig():
     with open(gol.CONFIG_PATH, 'r', encoding='utf-8') as f:
         data    = json.load(f)
         ui_data = data["UI"]
+        gol.REL_CBK_PATH = ui_data["action_code"]
 
         config_dir = os.path.dirname(gol.CONFIG_PATH)
-        gol.CALLBACK_PATH    = config_dir + "/" + ui_data["action_code"]
+        gol.CALLBACK_PATH    = config_dir + "/" + gol.REL_CBK_PATH
         if (gol.CALLBACK_PATH == "config/default_action.py"):
             script_dir = os.path.dirname(os.path.abspath(__file__))
             gol.CALLBACK_PATH = os.path.join(script_dir, "../config/default_action.py")
@@ -351,7 +353,7 @@ def saveConfig():
         components_data.append(component_dict)
 
     ui_data = {
-        "action_code": gol.CALLBACK_PATH,
+        "action_code": gol.REL_CBK_PATH,
         "window": {
             "title": pygame.display.get_caption()[0],
             "width": gol.APP_WIDTH,
