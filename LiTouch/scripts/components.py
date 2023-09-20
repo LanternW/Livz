@@ -86,7 +86,10 @@ class Component():
         self.postRender(surface)
     
     def onResize(self, new_size):
-        self.size = new_size
+        nsx , nsy = new_size
+        nsx = max(10, nsx)
+        nsy = max(10, nsy)
+        self.size = (nsx, nsy)
 
     def onMouseMotion(self, mouse_x, mouse_y):
         x, y = self.coord
@@ -330,8 +333,8 @@ class Switch(Component):
             renderCornerRect( self.canvas, self.on_color, (0,-3), (w,h+6) , 2)
     
     def onResize(self, new_size):
-        self.size = new_size
-        self.canvas_size = new_size
+        super().onResize( new_size )
+        self.canvas_size = self.size
     
     def onMouseClick(self, mouse_x, mouse_y, btn):
         super().onMouseClick(mouse_x, mouse_y, btn)
@@ -369,8 +372,8 @@ class Button(Component):
         blitTextCenter(self.canvas, self.title, font, (mx, my), self.color)
         
     def onResize(self, new_size):
-        self.size = new_size
-        self.canvas_size = new_size
+        super().onResize(new_size)
+        self.canvas_size = self.size
     
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
@@ -415,8 +418,8 @@ class ListButton(Component):
         blitTextLeft(self.canvas, self.title, font, (10, my), self.color)
 
     def onResize(self, new_size):
-        self.size = new_size
-        self.canvas_size = new_size
+        super().onResize(new_size)
+        self.canvas_size = self.size
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
         super().onMouseClick(mouse_x, mouse_y, btn)
@@ -463,8 +466,8 @@ class ButtonList(Component):
         # blitTextCenter(self.canvas, self.title, gol.font1, (mx, my), self.color)
 
     def onResize(self, new_size):
-        self.size = new_size
-        x,y = new_size
+        super().onResize(new_size)
+        x,y = self.size
         self.canvas_size = (x, self.canvas_size[1])
         self.mid_canvas  = pygame.Surface( self.canvas_size,  pygame.SRCALPHA ) 
         for button in self.button_list:
@@ -543,9 +546,9 @@ class Slider(Component):
 
 
     def onResize(self, new_size):
-        self.size = new_size
-        self.canvas_size = new_size
-        self.slider_width = new_size[0] * 0.07
+        super().onResize(new_size)
+        self.canvas_size  = self.size
+        self.slider_width = self.size[0] * 0.07
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
         super().onMouseClick(mouse_x, mouse_y, btn)
@@ -702,8 +705,8 @@ class Graph(Component):
         super().postRender(surface)
         
     def onResize(self, new_size):
-        self.size = new_size
-        self.canvas_size = new_size
+        super().onResize(new_size)
+        self.canvas_size  = self.size
     
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
@@ -1048,7 +1051,10 @@ class MiniTerminal(Component):
             # asyncio.run(self.uniCommand())
 
     def onResize(self, new_size):
-        self.size = new_size
+        nsx , nsy = new_size
+        nsx = max(2.5*self.line_height, nsx)
+        nsy = max(2.5*self.line_height, nsy)
+        self.size = (nsx,nsy)
         self.modified_h      = self.size[1] - 1.3*self.line_height
         self.reGenerateLines()
         self.title_font_size = min(26, max(14, self.size[1] * 0.2 ))
