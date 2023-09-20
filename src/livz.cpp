@@ -63,7 +63,7 @@ Livz& Livz::getInstance() {
         char* fake_argv[] = {(char*)"Lantern", NULL};
         long long unique_id = (static_cast<long long>(std::time(nullptr)) << 32) | getpid();
         std::string node_name = "livz_node_" + std::to_string(unique_id);
-        ros::init(fake_argc, fake_argv, "livz_node");
+        ros::init(fake_argc, fake_argv, node_name);
         first_call = false;
     }
 
