@@ -493,7 +493,7 @@ class ButtonList(Component):
         
         
 class Slider(Component):
-    def __init__(self, coord, size, min_value, max_value, callback, title="slider", slider_color=gol.COLOR_DARK_WHITE, cid = -1) -> None:
+    def __init__(self, coord, size, min_value, max_value, callback, title="slider", slider_color=gol.COLOR_SKY_BLUE, cid = -1) -> None:
         super().__init__(coord, size, cid)
         self.title = title
         self.slider_color = slider_color
@@ -514,12 +514,17 @@ class Slider(Component):
         w, h = self.size
         mx, my = 0.5 * w, 0.5 * h
 
-        puil_h     = 0.05 * h
-        puil_color = colorGradient(self.slider_color, gol.COLOR_BLACK, 0.4)
+        puil_h     = 0.08 * h
+        # puil_color = colorGradient(self.slider_color, gol.COLOR_BLACK, 0.4)
+        puil_color = gol.COLOR_DARK_WHITE
 
         renderCornerRect(self.canvas, puil_color, (0, my - 0.5*puil_h), (w, puil_h), 0)
+
         slider_position = ((self.current_value - self.min_value) / (self.max_value - self.min_value)) * (w-self.slider_width)
+
+        renderCornerRect(self.canvas, self.slider_color, (0, my - 0.5*puil_h), (slider_position, puil_h), 0)
         pygame.draw.rect(self.canvas, self.slider_color, (slider_position, 0, self.slider_width, h))
+
 
         font_size = h * 0.6
         font,real_size = gol.getFont(font_size)

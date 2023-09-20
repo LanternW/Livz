@@ -74,6 +74,8 @@ class Gol():
         self.COLOR_DARK_RED    = (100,0,0,255)
         self.COLOR_DARK_ORANGE = (100,70,0,255)
         self.COLOR_DARK_GREEN  = (0,100,0,255)
+
+        self.COLOR_SKY_BLUE    = (100,150,255,255)
         
         self.BASE_WINDOW_COLOR = (27,27,28,255)
         self.INFO_WINDOW_COLOR = (37,37,38,255)
