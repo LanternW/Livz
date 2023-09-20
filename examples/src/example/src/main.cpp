@@ -45,8 +45,14 @@ void litouchAction(const int cmd_id, const std::vector<double> params)
 
 int main(int argc, char** argv) {
 
-    // LiTouch ，启动 ！
-    Livz::launchLiTouch("/home/lantern/Livz/examples/src/example/config/touch_layout.json");
+    // 找到ui.json的绝对路径。利用此cpp文件的绝对路径拼接相对路径。
+    std::string absolute_path    = __FILE__;
+    size_t found                 = absolute_path.find_last_of("/\\");
+    std::string parent_dir       = absolute_path.substr(0, found);
+    std::string ui_conf_abs_path = parent_dir + "/../config/touch_layout.json";
+
+    // XX ，启动 ! 
+    Livz::launchLiTouch(ui_conf_abs_path);
 
     // 重新设置litouch_cmd的响应函数，litouch_cmd由python中interface.pubLiTouchCmd发布
     Livz::setLitouchAction(litouchAction);

@@ -23,13 +23,13 @@ roslaunch example run_demo.launch
 首先，在main.cpp中，调用API来启动LiTouch，并传递UI配置文件。
 
 ```C++
-Livz::launchLiTouch("ui_config_path");
+Livz::launchLiTouch( ui_config_path );
 ```
 UI配置文件的地址为
 ```
 example/src/example/config/touch_layout.json
 ```
-程序中使用了绝对路径，因此，如果LiTouch没有正确启动，请首先修改UI配置文件的路径。如果你使用VSCode,可以在资源管理器的文件上右键->复制路径。
+<span style="color:blue">ui_config_path使用了绝对路径，因此，如果LiTouch没有正确启动，请首先修改UI配置文件的路径。</span>如果你使用VSCode,可以在资源管理器的文件上右键->复制路径。
 
 然后，调用API绑定Action回调函数
 ```C++
@@ -41,7 +41,7 @@ Action回调函数的类型必须为：
 ```
 由于LiTouch是 python实现的，而用户程序可能是C++，因此在Livz内部定义了一个接口用于将Litouch的组件交互信息传递到C++中。
 
-实现组件的交互回调需要编写回调逻辑，LiTouch的回调逻辑统一编写在一个.py文件中，这个文件的路径由UI配置文件中"action_code"属性指定。同样的，示例程序中使用了绝对路径，因此需要进行修改。示例程序使用的回调逻辑文件目录为：
+实现组件的交互回调需要编写回调逻辑，LiTouch的回调逻辑统一编写在一个.py文件中，这个文件的路径由UI配置文件中"action_code"属性指定,<span style="color:blue">使用相对于UI配置文件的相对目录。</span>示例程序使用的回调逻辑文件目录为：
 ```bash
 example/src/example/config/touch_action.py
 ```
@@ -80,6 +80,10 @@ UI配置文件的构成如下（注意，json文件中不支持注释，实际�
                     "color_b": 120
                 },
                 ......
+            ]
+        }
+    }
+}
 ```
 而回调逻辑文件的构成如下：
 ```python

@@ -389,8 +389,8 @@ class ListButton(Component):
         self.title      = title
         self.pass_color = pass_color
         self.color      = gol.COLOR_WHITE
-
         self.callback   = callback
+        self.animate_t  = 0
 
     def preRender(self):
         super().preRender()
@@ -399,9 +399,15 @@ class ListButton(Component):
         w, h = self.size
         mx, my = 0.5 * w, 0.5 * h
 
-        # renderCornerRect(self.canvas, gol.COLOR_GREEN, (0, 0), self.size, 2)
+        
         if self.passby:
-            renderCornerRect(self.canvas, self.pass_color, (0, 0), self.size, 0)
+            self.animate_t = min( self.animate_t + 0.1 , 1.0)
+            k = self.animate_t ** 2
+            p_color = colorGradient(gol.COMPONENT_COLOR, self.pass_color, k)
+            renderCornerRect(self.canvas, p_color, (0, 0), self.size, 0)
+        
+        else:
+            self.animate_t = max( self.animate_t - 0.05 , 0.0)
         
 
         font_size = min( h * 0.8, (2.4*self.size[0]/len(self.title) ))

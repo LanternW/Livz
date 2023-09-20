@@ -1,6 +1,6 @@
 {
     "UI": {
-        "action_code": "/usr/local/lib/LiTouch/config/default_action.py",
+        "action_code": "./default_action.py",
         "window": {
             "title": "LiTouch",
             "width": 800,

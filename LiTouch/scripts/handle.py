@@ -148,7 +148,8 @@ def scanAllActionFuncs():
         data    = json.load(f)
         ui_data = data["UI"]
 
-        gol.CALLBACK_PATH    = ui_data["action_code"]
+        config_dir = os.path.dirname(gol.CONFIG_PATH)
+        gol.CALLBACK_PATH    = config_dir + "/" + ui_data["action_code"]
         if (gol.CALLBACK_PATH == "config/default_action.py"):
             script_dir = os.path.dirname(os.path.abspath(__file__))
             gol.CALLBACK_PATH = os.path.join(script_dir, "../config/default_action.py")
@@ -169,7 +170,8 @@ def readConfig():
         data    = json.load(f)
         ui_data = data["UI"]
 
-        gol.CALLBACK_PATH    = ui_data["action_code"]
+        config_dir = os.path.dirname(gol.CONFIG_PATH)
+        gol.CALLBACK_PATH    = config_dir + "/" + ui_data["action_code"]
         if (gol.CALLBACK_PATH == "config/default_action.py"):
             script_dir = os.path.dirname(os.path.abspath(__file__))
             gol.CALLBACK_PATH = os.path.join(script_dir, "../config/default_action.py")
