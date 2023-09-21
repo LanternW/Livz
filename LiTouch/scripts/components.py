@@ -531,9 +531,11 @@ class Slider(Component):
 
         font_size = h * 0.6
         font,real_size = gol.getFont(font_size)
-        blitTextCenter(self.canvas, self.title, font, (mx, h - 0.4*real_size), self.color)
-        blitTextLeft(self.canvas, float_to_str(self.min_value), font, (0, h - 0.4*real_size), self.color)
-        blitTextRight(self.canvas, float_to_str(self.max_value), font, (w, h - 0.4*real_size), self.color)
+
+        shown_str = float_to_str(self.min_value) + "  <  " + self.title + "  >  " +  float_to_str(self.max_value)
+        blitTextCenter(self.canvas, shown_str, font, (mx, h - 0.4*real_size), self.color)
+        # blitTextLeft(self.canvas, float_to_str(self.min_value), font, (0, h - 0.4*real_size), self.color)
+        # blitTextRight(self.canvas, float_to_str(self.max_value), font, (w, h - 0.4*real_size), self.color)
 
         if self.passby:
             pygame.draw.rect(self.canvas, self.pass_color, (slider_position, 0, self.slider_width, h))
@@ -548,7 +550,7 @@ class Slider(Component):
     def onResize(self, new_size):
         super().onResize(new_size)
         self.canvas_size  = self.size
-        self.slider_width = self.size[0] * 0.07
+        self.slider_width = min(self.size[0] * 0.04, 20)
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
         super().onMouseClick(mouse_x, mouse_y, btn)
