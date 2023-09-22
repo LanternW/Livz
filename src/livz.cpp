@@ -1509,6 +1509,8 @@ void Livz::renderVectorField(  const std::string& topic_name,
         vector_norm = res.norm();
         st = (vector_norm - min_vector_norm) / (max_vector_norm - min_vector_norm + 0.01);
         vector_len   = k * vector_norm + b;
+
+        if((max_vector_norm - min_vector_norm) < 0.2){ vector_len *= 1.7; }// 临时的，马上删除
         //  vector_len   = 0.8 * resolution.minCoeff();
         arrow_len    = 0.1 * vector_len;
         arrow_width  = 3 * arrow_len;
