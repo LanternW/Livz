@@ -13,6 +13,8 @@
 #include <cstdlib>
 #include <dlfcn.h>
 #include <unistd.h>
+#include <sstream>
+#include <bitset>
 #include <sys/types.h>
 #include <sys/wait.h>
 
@@ -119,6 +121,22 @@ namespace LCOLOR {
     const Eigen::Vector4d CREAM(1.0, 0.9, 0.8, 1.0);   //奶油色，不透明
     const Eigen::Vector4d CRIMSON(0.9, 0.1, 0.1, 1.0); //深红色，不透明
     const Eigen::Vector4d HONEY(1.0, 0.9, 0.6, 1.0);   //蜜色，不透明
+
+    Eigen::Vector4d HEX( const std::string& hex_color ) {
+        if (hex_color.front() == '#') {
+            std::stringstream ss;
+            ss << std::hex << hex_color.substr(1);
+            int hexValue;
+            ss >> hexValue;
+
+            int r = (hexValue >> 16) & 0xFF;
+            int g = (hexValue >> 8) & 0xFF;
+            int b = hexValue & 0xFF;
+
+            return Eigen::Vector4d( r/255.0, g/255.0, b/255.0, 1.0 );
+        }
+        return Eigen::Vector4d(0,0,0,1);
+    }
 }
 
 namespace POLYGON_TYPE{
