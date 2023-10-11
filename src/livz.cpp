@@ -28,6 +28,26 @@ namespace CONFIG{
     std::string default_frame_id = "map";
 }
 
+namespace LCOLOR{
+   
+Eigen::Vector4d HEX( const std::string& hex_color ) {
+    if (hex_color.front() == '#') {
+        std::stringstream ss;
+        ss << std::hex << hex_color.substr(1);
+        int hexValue;
+        ss >> hexValue;
+
+        int r = (hexValue >> 16) & 0xFF;
+        int g = (hexValue >> 8) & 0xFF;
+        int b = hexValue & 0xFF;
+
+        return Eigen::Vector4d( r/255.0, g/255.0, b/255.0, 1.0 );
+    }
+    return Eigen::Vector4d(0,0,0,1);
+} 
+
+};
+
 
 void Livz::LivzTick(const ros::TimerEvent& event)
 {
