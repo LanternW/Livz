@@ -103,7 +103,7 @@ ros::Publisher& Livz::getPublisher(const std::string& topic_name) {
         while (publisher.getNumSubscribers() < 1) {
             Livz::Delay(100);
             wait_time += 0.1;
-            if(wait_time > 2.0){
+            if(wait_time > 1.0){
                 PRINT_COLOR_TEXT("[Livz] 话题 \"" << topic_name << "\" 似乎没有订阅者，请检查rviz配置。\n"
                  << "[Livz] Looks like Topic \"" << topic_name << "\" is not subscribed by any subscriber. Check rviz config.",  YELLOW);
                 break;
@@ -368,6 +368,7 @@ void Livz::drawOnePoint( const std::string& topic_name,
                                std::string frame_id, 
                                int id) 
 {
+    if( std::isinf(position.norm()) || std::isnan(position.norm()) ) { return ; }
     ros::Publisher& publisher = getInstance().getPublisher(topic_name);
 
     visualization_msgs::Marker point;
@@ -431,6 +432,7 @@ void Livz::drawPoints( const std::string& topic_name,
     }
 
     for (size_t i = 0; i < positions.size(); ++i) {
+        if( std::isinf(position.norm()) || std::isnan(position.norm()) ) { continue; }
         geometry_msgs::Point p;
         p.x = positions[i](0);
         p.y = positions[i](1);
@@ -462,6 +464,7 @@ void Livz::drawOneSphere( const std::string& topic_name,
                                 std::string frame_id,
                                 int id)
 {
+    if( std::isinf(position.norm()) || std::isnan(position.norm()) ) { return ; }
     ros::Publisher& publisher = getInstance().getPublisher(topic_name);
 
     visualization_msgs::Marker sphere;
@@ -498,6 +501,7 @@ void Livz::drawOneCylinder(const std::string& topic_name,
                                 std::string frame_id,
                                 int id)
 {
+    if( std::isinf(position.norm()) || std::isnan(position.norm()) ) { return ; }
     ros::Publisher& publisher = Livz::getInstance().getPublisher(topic_name);
     visualization_msgs::Marker cylinder;
     cylinder.header.frame_id = frame_id;
@@ -528,6 +532,7 @@ void Livz::drawOneCube(const std::string& topic_name,
                           std::string frame_id,
                           int id)
 {
+    if( std::isinf(position.norm()) || std::isnan(position.norm()) ) { return ; }
     ros::Publisher& publisher = Livz::getInstance().getPublisher(topic_name);
     visualization_msgs::Marker cube;
     cube.header.frame_id = frame_id;
@@ -559,6 +564,8 @@ void Livz::drawOneArrow(const std::string& topic_name,
                               std::string frame_id,
                               int id)
 {
+    if( std::isinf(start_point.norm()) || std::isnan(start_point.norm()) ) { return ; }
+    if( std::isinf(end_point.norm())   || std::isnan(end_point.norm()) ) { return ; }
     ros::Publisher& publisher = Livz::getInstance().getPublisher(topic_name);
     visualization_msgs::Marker arrow;
     arrow.header.stamp = ros::Time::now();
@@ -612,6 +619,9 @@ void Livz::drawArrows(const std::string& topic_name,
         start_point = start_points[i];
         end_point   = end_points[i];
         scale       = scales[i];
+
+        if( std::isinf(start_point.norm()) || std::isnan(start_point.norm()) ) { continue ; }
+        if( std::isinf(end_point.norm())   || std::isnan(end_point.norm()) ) { continue ; }
 
         visualization_msgs::Marker arrow;
         arrow.header.stamp = ros::Time::now();
@@ -670,6 +680,9 @@ void Livz::drawArrowsWithColors(const std::string& topic_name,
         end_point   = end_points[i];
         color       = colors[i];
         scale       = scales[i];
+
+        if( std::isinf(start_point.norm()) || std::isnan(start_point.norm()) ) { continue ; }
+        if( std::isinf(end_point.norm())   || std::isnan(end_point.norm()) ) { continue ; }
 
         visualization_msgs::Marker arrow;
         arrow.header.stamp = ros::Time::now();
