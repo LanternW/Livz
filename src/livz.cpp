@@ -432,7 +432,7 @@ void Livz::drawPoints( const std::string& topic_name,
     }
 
     for (size_t i = 0; i < positions.size(); ++i) {
-        if( std::isinf(position.norm()) || std::isnan(position.norm()) ) { continue; }
+        if( std::isinf(positions[i].norm()) || std::isnan(positions[i].norm()) ) { continue; }
         geometry_msgs::Point p;
         p.x = positions[i](0);
         p.y = positions[i](1);
