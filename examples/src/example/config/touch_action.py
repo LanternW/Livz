@@ -45,4 +45,3 @@ def demo4_callback():
 def demo5_callback():
     print("播放demo5")
     interface.pubLiTouchCmd(5)
-

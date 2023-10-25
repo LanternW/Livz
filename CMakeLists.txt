@@ -43,6 +43,18 @@ execute_process(
     fi"
 )
 
+execute_process(
+    COMMAND bash -c 
+    "if [ -f ${HOME_DIR}/.zshrc ]; then \
+        if grep -q 'export LIVZ_TOUCH_LIB_VAR=' ${HOME_DIR}/.zshrc; then \
+            sed -i 's|export LIVZ_TOUCH_LIB_VAR=.*|export LIVZ_TOUCH_LIB_VAR=${CMAKE_INSTALL_PREFIX}/lib/LiTouch/scripts|' ${HOME_DIR}/.zshrc; \
+        else \
+            echo 'export LIVZ_TOUCH_LIB_VAR=${CMAKE_INSTALL_PREFIX}/lib/LiTouch/scripts' >> ${HOME_DIR}/.zshrc; \
+        fi \
+    fi"
+)
+
+
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 add_library(${PROJECT_NAME} STATIC 
                 src/livz.cpp

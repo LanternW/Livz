@@ -49,9 +49,9 @@ def launchLiTouch(config_path = install_prefix + "/../config/default.json"):
         try:
             subprocess.run(command, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             python_command += version
-            print(f"[LiTouch] 使用{python_command}启动。")
+            print_color(f"[LiTouch] 使用{python_command}启动。", "green")
             break
-        except subprocess.CalledProcessError:
+        except Exception as e:
             continue
 
     # 创建并启动子进程
@@ -64,5 +64,5 @@ def launchLiTouch(config_path = install_prefix + "/../config/default.json"):
         subprocess.Popen(args)
 
     except Exception as e:
-        print(f"Fork failed: {e}")
+        print_color(f"Fork failed: {e}" , red)
 
