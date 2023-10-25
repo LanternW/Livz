@@ -85,13 +85,13 @@
                     "width": 190,
                     "height": 146,
                     "buffer_rows": 80,
-                    "font_size": 20,
+                    "font_size": 15,
                     "text_r": 30,
-                    "text_g": 255,
+                    "text_g": 125,
                     "text_b": 30,
-                    "background_r": 0,
-                    "background_g": 0,
-                    "background_b": 0
+                    "background_r": 208,
+                    "background_g": 186,
+                    "background_b": 203
                 },
                 {
                     "type": "mini_terminal",
@@ -102,13 +102,13 @@
                     "width": 210,
                     "height": 146,
                     "buffer_rows": 80,
-                    "font_size": 20,
-                    "text_r": 255,
-                    "text_g": 255,
-                    "text_b": 255,
-                    "background_r": 0,
-                    "background_g": 0,
-                    "background_b": 0
+                    "font_size": 15,
+                    "text_r": 235,
+                    "text_g": 235,
+                    "text_b": 20,
+                    "background_r": 208,
+                    "background_g": 186,
+                    "background_b": 203
                 }
             ]
         }

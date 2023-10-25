@@ -9,8 +9,34 @@
 # See LICENSE.txt for details.
 import os
 import pygame
+import numpy as np
 pygame.init()
 pygame.font.init()
+
+def create_gradient_surface(width_, height_, start_color, end_color, dir="vertical"):
+    width  = int(height_)
+    height = int(width_)
+    if dir == 'horizontal':
+        gradient = np.zeros((height, width, 3), dtype=np.uint8)
+        for y in range(height):
+            color = (
+                start_color[0] * (1 - y/height) + end_color[0] * y/height,
+                start_color[1] * (1 - y/height) + end_color[1] * y/height,
+                start_color[2] * (1 - y/height) + end_color[2] * y/height
+            )
+            gradient[y, :, :] = color
+    elif dir == 'vertical':
+        gradient = np.zeros((height, width, 3), dtype=np.uint8)
+        for x in range(width):
+            color = (
+                start_color[0] * (1 - x/width) + end_color[0] * x/width,
+                start_color[1] * (1 - x/width) + end_color[1] * x/width,
+                start_color[2] * (1 - x/width) + end_color[2] * x/width
+            )
+            gradient[:, x, :] = color
+    else:
+        raise ValueError("Invalid direction. Expected 'vertical' or 'horizontal'.")
+    return pygame.surfarray.make_surface(gradient)
 
 def print_color(text, color="white"):
     colors = {
@@ -76,16 +102,44 @@ class Gol():
         self.COLOR_DARK_RED    = (100,0,0,255)
         self.COLOR_DARK_ORANGE = (100,70,0,255)
         self.COLOR_DARK_GREEN  = (0,100,0,255)
-
         self.COLOR_SKY_BLUE    = (100,150,255,255)
+
+        self.COLOR_TRANS = (244,225,176,0)
+        self.COLOR_LIGHT_YELLOW_TRANS = (244,225,176, 100)
+
+        self.TEXT_COLOR = (57,44,67, 255)
+        self.SCROLL_BAR_COLOR = (141,102,82,255)
         
-        self.BASE_WINDOW_COLOR = (27,27,28,255)
+        self.BASE_WINDOW_COLOR = (29,40,54,255)
         self.INFO_WINDOW_COLOR = (37,37,38,255)
         self.ITEM_WINDOW_COLOR = (30,30,30,255)
-        self.STATE_WINDOW_COLOR = (10,10,10,255)
-        self.MENU_WINDOW_COLOR = (15,15,15,255)
-        self.COMPONENT_WINDOW_COLOR = (27,27,28,255)
+        self.STATE_WINDOW_COLOR = (188,168,111,255)
+        self.MENU_WINDOW_COLOR = (188,168,111,255)
+        self.COMPONENT_WINDOW_COLOR1 = (234,222,179)
+        self.COMPONENT_WINDOW_COLOR2 = (228,198,141)
+        self.COMPONENT_BACKGROUND    = create_gradient_surface(self.APP_WIDTH ,self.APP_HEIGHT,  self.COMPONENT_WINDOW_COLOR1 , self.COMPONENT_WINDOW_COLOR2 )
+
+        self.BUTTON_LIST_BG_COLOR1 = (248,240,207,205)
+        self.BUTTON_LIST_BG_COLOR2 = (233,218,175)
+
+        self.LIST_BUTTON_BG_COLOR1 = (241,211,168,205)
+        self.LIST_BUTTON_BG_COLOR2 = (240,196,150,205)
+        self.LIST_BUTTON_BG_COLOR  = (254,243,217, 200)
+
         self.COMPONENT_COLOR = (17,17,18,255)
+
+        self.BUTTON_BG_COLOR1      = (248,219,159, 255)
+        self.BUTTON_BG_COLOR2      = (248,240,207, 255)
+        self.BUTTON_HOVER_COLOR    = (242,235,213, 255)
+        self.BUTTON_SIDE_COLOR = (77,100,115, 255)
+
+        self.SWITCH_BORDER_COLOR1 = (212,190,208,255)
+        self.SWITCH_BORDER_COLOR2 = (142,120,138,255)
+
+        self.SLIDER_BG_COLOR = (238,224,187,255)
+        self.SLIDER_BAR_COLOR = (141,102,82,255)
+        self.SLIDER_TRACK_COLOR = (243,209,91, 255)
+
         self.STACK_LINE_COLOR   = (130,130,255,255)
         self.GROUP_BORDER_COLOR = (255,255,255,255)
         self.DB_BORDER_COLOR    = (155,155,0,255)
@@ -132,6 +186,9 @@ class Gol():
     def getMonoFont(self, size):
         closest_size = min(self.fonts.keys(), key=lambda x: abs(x - size))
         return self.mono_fonts[closest_size], closest_size
+    
+    def updateWindowBackground(self):
+        self.COMPONENT_BACKGROUND    = create_gradient_surface(self.APP_WIDTH ,self.APP_HEIGHT,  self.COMPONENT_WINDOW_COLOR1 , self.COMPONENT_WINDOW_COLOR2 )
 
                 
 

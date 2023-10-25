@@ -12,12 +12,19 @@ import pygame
 import time
 from gol import *
 import random
+import numpy as np
 
 def getRandomColor():
     r = random.randint(50, 255)
     g = random.randint(50, 255)
     b = random.randint(50, 255)
     return (r, g, b)
+
+def get_contrast_color(rgb_color):
+    # 计算反色
+    r,g,b,a = rgb_color
+    contrast_color = (255-r, 255-g, 255-b, a)
+    return contrast_color
 
 
 def colorGradient(color1, color2, scale):
@@ -150,3 +157,97 @@ def sigmoid(x):
 
 def getDateStr():
     return time.strftime('%Y-%m-%d %T',time.localtime(time.time()))
+
+
+def create_gradient_surface(width_, height_, start_color, end_color, dir="vertical"):
+    width  = int(height_)
+    height = int(width_)
+    if dir == 'horizontal':
+        gradient = np.zeros((height, width, 3), dtype=np.uint8)
+        for y in range(height):
+            color = (
+                start_color[0] * (1 - y/height) + end_color[0] * y/height,
+                start_color[1] * (1 - y/height) + end_color[1] * y/height,
+                start_color[2] * (1 - y/height) + end_color[2] * y/height
+            )
+            gradient[y, :, :] = color
+    elif dir == 'vertical':
+        gradient = np.zeros((height, width, 3), dtype=np.uint8)
+        for x in range(width):
+            color = (
+                start_color[0] * (1 - x/width) + end_color[0] * x/width,
+                start_color[1] * (1 - x/width) + end_color[1] * x/width,
+                start_color[2] * (1 - x/width) + end_color[2] * x/width
+            )
+            gradient[:, x, :] = color
+    else:
+        raise ValueError("Invalid direction. Expected 'vertical' or 'horizontal'.")
+    return pygame.surfarray.make_surface(gradient)
+
+def create_gradient_surface_with_radius(width_, height_, start_color, end_color, radius = 0.2, dir="vertical"):
+    width  = int(height_)
+    height = int(width_)
+    if dir == 'horizontal':
+        gradient = np.zeros((height, width, 3), dtype=np.uint8)
+        for y in range(height):
+            color = (
+                start_color[0] * (1 - abs(2*y/height - 1)) + end_color[0] * abs(2*y/height - 1),
+                start_color[1] * (1 - abs(2*y/height - 1)) + end_color[1] * abs(2*y/height - 1),
+                start_color[2] * (1 - abs(2*y/height - 1)) + end_color[2] * abs(2*y/height - 1)
+            )
+            gradient[y, :, :] = color
+    elif dir == 'vertical':
+        gradient = np.zeros((height, width, 3), dtype=np.uint8)
+        for x in range(width):
+            color = (
+                start_color[0] * (1 - x/width) + end_color[0] * x/width,
+                start_color[1] * (1 - x/width) + end_color[1] * x/width,
+                start_color[2] * (1 - x/width) + end_color[2] * x/width
+            )
+            gradient[:, x, :] = color
+    else:
+        raise ValueError("Invalid direction. Expected 'vertical' or 'horizontal'.")
+    
+    # 创建圆角
+    surface = pygame.surfarray.make_surface(gradient)
+    surface = surface.convert_alpha()
+    mask    = pygame.Surface((width_, height_), pygame.SRCALPHA)
+    pygame.draw.rect(mask, (255, 255, 255), mask.get_rect(), 0, border_radius=int(min(width, height)*radius/2))
+    surface.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+
+    return surface
+
+def create_soft_shadow(width, height, radius=0.5, blur=10):
+
+    
+    abs_radius = int(min(width, height)*radius/2)
+    def getSDF(x,y):
+        sdf = 0
+        dx = min(x, width - x)
+        dy = min(y , height - y)
+        if dx < abs_radius and dy < abs_radius:
+            rmin = math.sqrt( (x-abs_radius)*(x-abs_radius) + (y-abs_radius)*(y-abs_radius) )                   
+            rmin = min(rmin, math.sqrt( (x - width + abs_radius)*(x-width + abs_radius) + (y-abs_radius)*(y-abs_radius)) )
+            rmin = min(rmin, math.sqrt( (x-abs_radius)*(x-abs_radius) + (y-height+ abs_radius)*(y-height+ abs_radius)))
+            rmin = min(rmin, math.sqrt( (x- width+abs_radius)*(x- width+abs_radius) + (y-height+ abs_radius)*(y-height+ abs_radius)))
+            sdf  = rmin - abs_radius
+        else:
+            kmin = min(dx, dy)
+            sdf  = -kmin
+        return sdf
+
+
+    surface = pygame.Surface((width, height), pygame.SRCALPHA)
+    # surface.fill((40,40,40,50))
+    for y in range(height):
+        for x in range(width):
+            sdf   = getSDF(x,y)
+            alpha = int( min(255, max(0, (-255 * sdf / blur) )))
+            color = (161,131,125,alpha)
+            surface.set_at((x, y), color)
+
+    mask = pygame.Surface((width, height), pygame.SRCALPHA)
+    pygame.draw.rect(mask, (255, 255, 255), mask.get_rect(), 0, border_radius=abs_radius)
+    surface.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+
+    return surface

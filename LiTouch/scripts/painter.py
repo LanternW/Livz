@@ -16,7 +16,8 @@ class Painter:
 
     def clearScreen(self):
         gol.BASE_WINDOW.fill(gol.BASE_WINDOW_COLOR)
-        gol.COMPONENT_WINDOW.fill(gol.COMPONENT_WINDOW_COLOR)
+        # gol.COMPONENT_WINDOW.fill(gol.COMPONENT_WINDOW_COLOR)
+        gol.COMPONENT_WINDOW.blit(gol.COMPONENT_BACKGROUND, (0,0))
         gol.MENU_WINDOW.fill(gol.MENU_WINDOW_COLOR)
         gol.STATE_WINDOW.fill(gol.STATE_WINDOW_COLOR)
 

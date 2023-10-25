@@ -27,7 +27,8 @@ class Component():
         self.ResizeCat = 0
     
     def preRender( self ):
-        self.canvas.fill(gol.COMPONENT_WINDOW_COLOR)
+        pass
+        # self.canvas.fill(gol.COMPONENT_WINDOW_COLOR1)
 
     
     def postRender(self, surface):
@@ -39,7 +40,7 @@ class Component():
             scrollbar_y_rel = (self.canvas_coord[1] / self.canvas_size[1]) * self.size[1]
 
             # 绘制垂直滚动条
-            pygame.draw.rect(self.canvas, gol.COMPONENT_WINDOW_COLOR, (self.size[0] - vertical_scroll_bar_width, 0, vertical_scroll_bar_width, self.size[1]))
+            pygame.draw.rect(self.canvas, gol.SCROLL_BAR_COLOR, (self.size[0] - vertical_scroll_bar_width, 0, vertical_scroll_bar_width, self.size[1]))
             pygame.draw.rect(self.canvas, (255, 255, 70), (self.size[0] - vertical_scroll_bar_width, scrollbar_y_rel, vertical_scroll_bar_width, scrollbar_height))
 
         if (self.canvas_size[0] > self.size[0] ):
@@ -48,7 +49,7 @@ class Component():
             scrollbar_x_rel = (self.canvas_coord[0] / self.canvas_size[0]) * self.size[0]
 
             # 绘制水平滚动条
-            pygame.draw.rect(self.canvas, gol.COMPONENT_WINDOW_COLOR, (0, self.size[1] - horizonal_scroll_bar_height, self.size[0], horizonal_scroll_bar_height))
+            pygame.draw.rect(self.canvas, gol.SCROLL_BAR_COLOR, (0, self.size[1] - horizonal_scroll_bar_height, self.size[0], horizonal_scroll_bar_height))
             pygame.draw.rect(self.canvas, (255, 255, 70), (scrollbar_x_rel, self.size[1] - horizonal_scroll_bar_height, scrollbar_width, horizonal_scroll_bar_height))
 
 
@@ -289,7 +290,7 @@ class Label(Component):
         self.color = color
 
     def preRender( self ):
-        self.canvas.fill(gol.COMPONENT_WINDOW_COLOR)
+        self.canvas.fill(gol.COLOR_TRANS)
         w,h   = self.size
         mx,my = 0.5*w , 0.5*h
 
@@ -304,12 +305,14 @@ class Label(Component):
 
 
 class Switch(Component):
-    def __init__(self, coord, size, callback, title = "switch", on_color = gol.COLOR_ORANGE, cid = -1) -> None:
+    def __init__(self, coord, size, callback, title = "switch", on_color = gol.SWITCH_BORDER_COLOR2, cid = -1) -> None:
         super().__init__(coord, size, cid)
         self.title      = title
         self.on_color   = on_color
-        self.pass_color = colorGradient(on_color, gol.COLOR_BLACK, 0.6)
-        self.color      = gol.COLOR_WHITE
+        self.pass_color = colorGradient(on_color, gol.BUTTON_BG_COLOR2, 0.6)
+        self.color      = gol.TEXT_COLOR
+
+        self.static_back_surf = create_gradient_surface_with_radius(size[0], size[1], gol.BUTTON_BG_COLOR2, gol.BUTTON_BG_COLOR1 , radius=0.0 , dir="horizontal")
 
         self.callback   = callback
 
@@ -317,20 +320,23 @@ class Switch(Component):
     
     def preRender( self ):
         super().preRender()
+        self.canvas.blit(self.static_back_surf, (0,0))
         w,h   = self.size
         mx,my = 0.5*w , 0.5*h
+
+
+        if self.passby == True:
+            renderCornerRect( self.canvas, self.pass_color, (0,0), self.size, 0)
+
+        if self.on == True:
+            renderCornerRect( self.canvas, self.on_color, (0,0), self.size , 4)
+        else:
+            renderCornerRect( self.canvas, self.on_color, (0,-3), (w,h+6) , 4)
+        
 
         font_size = h * 0.9
         font, real_size = gol.getFont(font_size)
         blitTextCenter( self.canvas, self.title, font, (mx,my), self.color)
-
-        if self.passby == True:
-            renderCornerRect( self.canvas, self.pass_color, (0,0), self.size, 2)
-
-        if self.on == True:
-            renderCornerRect( self.canvas, self.on_color, (0,0), self.size , 2)
-        else:
-            renderCornerRect( self.canvas, self.on_color, (0,-3), (w,h+6) , 2)
     
     def onResize(self, new_size):
         super().onResize( new_size )
@@ -348,21 +354,26 @@ class Switch(Component):
 
 
 class Button(Component):
-    def __init__(self, coord, size, callback, title="button", on_color=gol.COLOR_ORANGE, cid = -1) -> None:
+    def __init__(self, coord, size, callback, title="button", on_color=gol.BUTTON_HOVER_COLOR, cid = -1) -> None:
         super().__init__(coord, size, cid)
         self.title      = title
         self.on_color   = on_color
-        self.pass_color = colorGradient(on_color, gol.COLOR_BLACK, 0.4)
-        self.color = gol.COLOR_WHITE
+        self.pass_color = colorGradient(on_color, gol.BUTTON_BG_COLOR2, 0.8)
+        self.color  = gol.TEXT_COLOR
+        self.radius = 0.7
 
+        self.mask    = pygame.Surface((size[0], size[1]), pygame.SRCALPHA)
+        self.static_back_surf = create_gradient_surface_with_radius(size[0], size[1], gol.BUTTON_BG_COLOR2, gol.BUTTON_BG_COLOR1 , radius=self.radius , dir="horizontal")
         self.callback = callback
+
 
     def preRender(self):
         super().preRender()
         w, h = self.size
         mx, my = 0.5 * w, 0.5 * h
 
-        renderCornerRect(self.canvas, gol.COLOR_DARK_WHITE, (0, 0), (w,h), 2)
+        self.canvas.blit(self.static_back_surf, (0,0))
+        # renderCornerRect(self.canvas, gol.BUTTON_SIDE_COLOR, (0, 0), (w,h), 2)
 
         if self.passby:
             renderCornerRect(self.canvas, self.pass_color, (0, 0), self.size, 0)
@@ -370,10 +381,16 @@ class Button(Component):
         font_size = min( h * 0.9, (2.1*self.size[0]/len(self.title) ))
         font, real_size = gol.getFont(font_size)
         blitTextCenter(self.canvas, self.title, font, (mx, my), self.color)
+        w,h = self.size
+        pygame.draw.rect(self.mask, (255, 255, 255), self.mask.get_rect(), 0, border_radius=int(min(w, h)*self.radius/2))
+        self.canvas.blit(self.mask, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
         
     def onResize(self, new_size):
         super().onResize(new_size)
         self.canvas_size = self.size
+
+        self.mask    = pygame.Surface((new_size[0], new_size[1]), pygame.SRCALPHA)
+        self.static_back_surf = create_gradient_surface_with_radius(new_size[0], new_size[1], gol.BUTTON_BG_COLOR2, gol.BUTTON_BG_COLOR1 , radius=self.radius , dir="horizontal")
     
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
@@ -387,30 +404,35 @@ class Button(Component):
                 self.callback()
 
 class ListButton(Component):
-    def __init__(self, coord, size, callback, title="button", pass_color=gol.COLOR_DARK_WHITE, cid = -1) -> None:
+    def __init__(self, coord, size, callback, title="button", pass_color=gol.COLOR_LIGHT_YELLOW_TRANS, cid = -1) -> None:
         super().__init__(coord, size, cid)
         self.title      = title
         self.pass_color = pass_color
-        self.color      = gol.COLOR_WHITE
+        self.color      = gol.TEXT_COLOR
         self.callback   = callback
         self.animate_t  = 0
+        self.static_background_surf = create_gradient_surface_with_radius(size[0], size[1], gol.LIST_BUTTON_BG_COLOR1, gol.LIST_BUTTON_BG_COLOR2, 0)
 
     def preRender(self):
         super().preRender()
-        self.canvas.fill(gol.COMPONENT_COLOR)
+        self.canvas.fill(gol.LIST_BUTTON_BG_COLOR)
+        # self.canvas.blit(self.static_background_surf, (0,0))
 
         w, h = self.size
         mx, my = 0.5 * w, 0.5 * h
 
         
         if self.passby:
-            self.animate_t = min( self.animate_t + 0.1 , 1.0)
+            self.animate_t = min( self.animate_t + 0.05 , 1.0)
             k = self.animate_t ** 2
-            p_color = colorGradient(gol.COMPONENT_COLOR, self.pass_color, k)
+            p_color = colorGradient(gol.COLOR_TRANS, self.pass_color, k)
             renderCornerRect(self.canvas, p_color, (0, 0), self.size, 0)
         
         else:
             self.animate_t = max( self.animate_t - 0.05 , 0.0)
+            # k = self.animate_t ** 2
+            # p_color = colorGradient(gol.COLOR_TRANS, self.pass_color, k)
+            # renderCornerRect(self.canvas, p_color, (0, 0), self.size, 0)
         
 
         font_size = min( h * 0.8, (2.4*self.size[0]/len(self.title) ))
@@ -420,6 +442,7 @@ class ListButton(Component):
     def onResize(self, new_size):
         super().onResize(new_size)
         self.canvas_size = self.size
+        self.static_background_surf = create_gradient_surface_with_radius(new_size[0], new_size[1], gol.LIST_BUTTON_BG_COLOR1, gol.LIST_BUTTON_BG_COLOR2, 0)
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
         super().onMouseClick(mouse_x, mouse_y, btn)
@@ -437,6 +460,13 @@ class ButtonList(Component):
         self.mid_canvas     = pygame.Surface( size,  pygame.SRCALPHA ) 
         self.button_list    = button_list
         self.button_height  = btn_h
+        self.radius         = 0.2
+        self.need_regene_shadow = False
+        self.static_back_surf = create_gradient_surface_with_radius(size[0], size[1], gol.BUTTON_LIST_BG_COLOR1, gol.BUTTON_LIST_BG_COLOR2 , radius=self.radius)
+        self.card_out_shadow  = create_soft_shadow(size[0], size[1], radius=self.radius, blur=60)
+
+        # 创建圆角
+        self.mask    = pygame.Surface((size[0], size[1]), pygame.SRCALPHA)
         self.current_button_count = 0
     
     def appendButton(self, call_back, title="list_button", cid = -1):
@@ -448,9 +478,9 @@ class ButtonList(Component):
 
     def preRender(self):
         super().preRender()
-        self.canvas.fill(gol.COMPONENT_COLOR)
+        self.canvas.fill(gol.COLOR_TRANS)
+        self.canvas.blit(self.static_back_surf, (0,0))
         w, h = self.size
-        mx, my = 0.5 * w, 0.5 * h
 
         for button in self.button_list:
             button.preRender()
@@ -462,7 +492,20 @@ class ButtonList(Component):
 
         cx,cy = self.canvas_coord
         self.canvas.blit(self.mid_canvas, (-cx,-cy))
+
+        x,y  = self.coord
+        w, h = self.size
+        if(self.OnModify == False and self.need_regene_shadow == False):
+            surface.blit(self.card_out_shadow , (x-15, y + 15) )
+        
+        if(self.OnModify == False and self.need_regene_shadow == True):
+            self.card_out_shadow  = create_soft_shadow(self.size[0], self.size[1], radius=self.radius, blur=60)
+            self.need_regene_shadow = False
+        
+        pygame.draw.rect(self.mask, (255, 255, 255), self.mask.get_rect(), 0, border_radius=int(min(w, h)*self.radius/2))
+        self.canvas.blit(self.mask, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
         super().postRender(surface)
+
         # blitTextCenter(self.canvas, self.title, gol.font1, (mx, my), self.color)
 
     def onResize(self, new_size):
@@ -473,6 +516,9 @@ class ButtonList(Component):
         for button in self.button_list:
             button.size        = (x, button.size[1])
             button.canvas_size = (x, button.canvas_size[1])
+        
+        self.static_back_surf   = create_gradient_surface_with_radius(new_size[0], new_size[1], gol.BUTTON_LIST_BG_COLOR1, gol.BUTTON_LIST_BG_COLOR2 , radius=self.radius)
+        self.need_regene_shadow = True
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
         super().onMouseClick(mouse_x, mouse_y, btn)
@@ -496,12 +542,12 @@ class ButtonList(Component):
         
         
 class Slider(Component):
-    def __init__(self, coord, size, min_value, max_value, callback, title="slider", slider_color=gol.COLOR_SKY_BLUE, cid = -1) -> None:
+    def __init__(self, coord, size, min_value, max_value, callback, title="slider", slider_color=gol.SLIDER_BAR_COLOR, cid = -1) -> None:
         super().__init__(coord, size, cid)
         self.title = title
         self.slider_color = slider_color
         self.pass_color   = colorGradient(slider_color, gol.COLOR_WHITE, 0.6)
-        self.color = gol.COLOR_WHITE
+        self.color = gol.TEXT_COLOR
         self.slider_width = min(size[0] * 0.04, 20)
 
         self.min_value = min_value
@@ -514,12 +560,13 @@ class Slider(Component):
 
     def preRender(self):
         super().preRender()
+        self.canvas.fill(gol.SLIDER_BG_COLOR)
         w, h = self.size
         mx, my = 0.5 * w, 0.5 * h
 
         puil_h     = 0.08 * h
         # puil_color = colorGradient(self.slider_color, gol.COLOR_BLACK, 0.4)
-        puil_color = gol.COLOR_DARK_WHITE
+        puil_color = gol.SLIDER_TRACK_COLOR
 
         renderCornerRect(self.canvas, puil_color, (0, my - 0.5*puil_h), (w, puil_h), 0)
 
@@ -541,9 +588,9 @@ class Slider(Component):
             pygame.draw.rect(self.canvas, self.pass_color, (slider_position, 0, self.slider_width, h))
             mid_value = 0.5 * ( self.min_value +  self.max_value )
             if self.current_value < mid_value:
-                blitTextLeft(self.canvas, float_to_str(self.current_value), font, (slider_position +  self.slider_width , 0.4*real_size), gol.COLOR_YELLOW)
+                blitTextLeft(self.canvas, float_to_str(self.current_value), font, (slider_position +  self.slider_width , 0.4*real_size), self.slider_color)
             else:
-                blitTextRight(self.canvas, float_to_str(self.current_value), font, (slider_position , 0.4*real_size), gol.COLOR_YELLOW)
+                blitTextRight(self.canvas, float_to_str(self.current_value), font, (slider_position , 0.4*real_size), self.slider_color)
 
 
 
@@ -859,19 +906,21 @@ class MiniTerminal(Component):
         cx,cy = self.canvas_coord
         self.canvas.blit(self.mid_canvas, (-cx,-cy))
 
+        command_color = get_contrast_color( self.bg_color )
+        cursor_color = command_color
         command_str = "> " + self.command
-        blitTextLeft(self.canvas, command_str, self.font, (2, 0.5 * (h+self.modified_h)), gol.COLOR_WHITE)
-        renderLine(self.canvas, gol.COLOR_DARK_WHITE, (0, self.modified_h), (w, self.modified_h), 1)
+        blitTextLeft(self.canvas, command_str, self.font, (2, 0.5 * (h+self.modified_h)), command_color)
+        renderLine(self.canvas, cursor_color, (0, self.modified_h), (w, self.modified_h), 1)
         if self.fixing:
             cursor_x = self.getCursorX(self.cursor_pos)
             cursor_T = 200
             if self.cursor_time < cursor_T:
-                renderLine(self.canvas, gol.COLOR_YELLOW, (cursor_x, self.modified_h + 4), (cursor_x, h - 4), 2)
+                renderLine(self.canvas, cursor_color, (cursor_x, self.modified_h + 4), (cursor_x, h - 4), 2)
             if self.cursor_time > 2*cursor_T:
                 self.cursor_time = 0
             self.cursor_time += 1
 
-        blitTextLeft( surface, self.title, self.title_font, (x, y - 0.5*self.title_font_size), gol.COLOR_WHITE)
+        blitTextLeft( surface, self.title, self.title_font, (x, y - 0.5*self.title_font_size), gol.TEXT_COLOR)
 
         # 重写后的super().postRender
         vertical_scroll_bar_width    = 5
@@ -882,7 +931,7 @@ class MiniTerminal(Component):
             scrollbar_y_rel  = (self.canvas_coord[1] / self.canvas_size[1]) * modified_size_y
 
             # 绘制垂直滚动条
-            pygame.draw.rect(self.canvas, gol.COMPONENT_WINDOW_COLOR, (self.size[0] - vertical_scroll_bar_width, 0, vertical_scroll_bar_width, modified_size_y))
+            pygame.draw.rect(self.canvas, gol.SCROLL_BAR_COLOR, (self.size[0] - vertical_scroll_bar_width, 0, vertical_scroll_bar_width, modified_size_y))
             pygame.draw.rect(self.canvas, (255, 255, 70), (self.size[0] - vertical_scroll_bar_width, scrollbar_y_rel, vertical_scroll_bar_width, scrollbar_height))
 
         if (self.OnModify == True):

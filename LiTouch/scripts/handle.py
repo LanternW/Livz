@@ -192,6 +192,7 @@ def readConfig():
         gol.MENU_WINDOW      = pygame.Surface((window_width, gol.MENU_HEIGHT),  pygame.SRCALPHA) 
         gol.STATE_WINDOW     = pygame.Surface((window_width, gol.MENU_HEIGHT),  pygame.SRCALPHA)      
         gol.COMPONENT_WINDOW = pygame.Surface((window_width, window_height - 2*gol.MENU_HEIGHT),  pygame.SRCALPHA)  
+        gol.updateWindowBackground()
           
         pygame.display.set_caption(window_title)
         gol.COMPONENT_Y   = gol.MENU_HEIGHT
