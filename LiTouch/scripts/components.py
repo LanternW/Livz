@@ -313,7 +313,8 @@ class Switch(Component):
         self.color      = gol.TEXT_COLOR
 
         self.static_back_surf = create_gradient_surface_with_radius(size[0], size[1], gol.BUTTON_BG_COLOR2, gol.BUTTON_BG_COLOR1 , radius=0.0 , dir="horizontal")
-
+        self.card_out_shadow  = create_soft_shadow(size[0], size[1], radius=0.0, blur=60)
+        self.need_regene_shadow = False
         self.callback   = callback
 
         self.on       = False
@@ -337,10 +338,22 @@ class Switch(Component):
         font_size = h * 0.9
         font, real_size = gol.getFont(font_size)
         blitTextCenter( self.canvas, self.title, font, (mx,my), self.color)
-    
+        
+    def postRender(self, surface):
+        x,y  = self.coord
+        if(self.OnModify == False and self.need_regene_shadow == False):
+            surface.blit(self.card_out_shadow , (x-10, y + 10) )
+        
+        if(self.OnModify == False and self.need_regene_shadow == True):
+            self.card_out_shadow  = create_soft_shadow(self.size[0], self.size[1], radius=self.radius, blur=60)
+            self.need_regene_shadow = False
+
+        super().postRender(surface)
+
     def onResize(self, new_size):
         super().onResize( new_size )
         self.canvas_size = self.size
+        self.need_regene_shadow = True
     
     def onMouseClick(self, mouse_x, mouse_y, btn):
         super().onMouseClick(mouse_x, mouse_y, btn)
@@ -364,6 +377,8 @@ class Button(Component):
 
         self.mask    = pygame.Surface((size[0], size[1]), pygame.SRCALPHA)
         self.static_back_surf = create_gradient_surface_with_radius(size[0], size[1], gol.BUTTON_BG_COLOR2, gol.BUTTON_BG_COLOR1 , radius=self.radius , dir="horizontal")
+        self.card_out_shadow  = create_soft_shadow(size[0], size[1], radius=self.radius, blur=60)
+        self.need_regene_shadow = False
         self.callback = callback
 
 
@@ -391,6 +406,18 @@ class Button(Component):
 
         self.mask    = pygame.Surface((new_size[0], new_size[1]), pygame.SRCALPHA)
         self.static_back_surf = create_gradient_surface_with_radius(new_size[0], new_size[1], gol.BUTTON_BG_COLOR2, gol.BUTTON_BG_COLOR1 , radius=self.radius , dir="horizontal")
+        self.need_regene_shadow = True
+    
+    def postRender(self, surface):
+        x,y  = self.coord
+        if(self.OnModify == False and self.need_regene_shadow == False):
+            surface.blit(self.card_out_shadow , (x-10, y + 10) )
+        
+        if(self.OnModify == False and self.need_regene_shadow == True):
+            self.card_out_shadow  = create_soft_shadow(self.size[0], self.size[1], radius=self.radius, blur=60)
+            self.need_regene_shadow = False
+
+        super().postRender(surface)
     
 
     def onMouseClick(self, mouse_x, mouse_y, btn):

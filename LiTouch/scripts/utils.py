@@ -219,7 +219,8 @@ def create_gradient_surface_with_radius(width_, height_, start_color, end_color,
 
 def create_soft_shadow(width, height, radius=0.5, blur=10):
 
-    
+    width = int(width)
+    height = int(height)
     abs_radius = int(min(width, height)*radius/2)
     def getSDF(x,y):
         sdf = 0
