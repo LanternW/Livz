@@ -155,6 +155,11 @@ def scanAllActionFuncs():
             script_dir = os.path.dirname(os.path.abspath(__file__))
             gol.CALLBACK_PATH = os.path.join(script_dir, "../config/default_action.py")
         window_data      = ui_data["window"]
+
+
+        window_theme     = window_data.get("theme", 1)
+        gol.current_theme   = window_theme
+        gol.changeTheme(window_theme)
         # scan components action
         components        = window_data["components"]
         for component in components:
@@ -193,6 +198,8 @@ def readConfig():
         gol.STATE_WINDOW     = pygame.Surface((window_width, gol.MENU_HEIGHT),  pygame.SRCALPHA)      
         gol.COMPONENT_WINDOW = pygame.Surface((window_width, window_height - 2*gol.MENU_HEIGHT),  pygame.SRCALPHA)  
         gol.updateWindowBackground()
+
+  
           
         pygame.display.set_caption(window_title)
         gol.COMPONENT_Y   = gol.MENU_HEIGHT
@@ -359,6 +366,7 @@ def saveConfig():
             "title": pygame.display.get_caption()[0],
             "width": gol.APP_WIDTH,
             "height": gol.APP_HEIGHT,
+            "theme": gol.current_theme,
             "components": components_data
         }
     }

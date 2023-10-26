@@ -171,6 +171,9 @@ class Gol():
         self.states     = []
         self.menu       = []
         self.components = []
+
+        self.current_theme = 7
+        self.changeTheme(self.current_theme)
     
     def initialize_fonts(self):
         # 40个常用字号，可以根据需要调整这个列表
@@ -189,6 +192,242 @@ class Gol():
     
     def updateWindowBackground(self):
         self.COMPONENT_BACKGROUND    = create_gradient_surface(self.APP_WIDTH ,self.APP_HEIGHT,  self.COMPONENT_WINDOW_COLOR1 , self.COMPONENT_WINDOW_COLOR2 )
+
+    
+    def changeTheme(self, tid):
+        if tid == 1: #秋
+            self.BASE_WINDOW_COLOR = (29,40,54,255)
+            self.INFO_WINDOW_COLOR = (37,37,38,255)
+            self.ITEM_WINDOW_COLOR = (30,30,30,255)
+            self.STATE_WINDOW_COLOR = (188,168,111,255)
+            self.MENU_WINDOW_COLOR = (188,168,111,255)
+            self.COMPONENT_WINDOW_COLOR1 = (234,222,179)
+            self.COMPONENT_WINDOW_COLOR2 = (228,198,141)
+
+            self.BUTTON_LIST_BG_COLOR1 = (248,240,207,205)
+            self.BUTTON_LIST_BG_COLOR2 = (233,218,175)
+
+            self.LIST_BUTTON_BG_COLOR1 = (241,211,168,205)
+            self.LIST_BUTTON_BG_COLOR2 = (240,196,150,205)
+            self.LIST_BUTTON_BG_COLOR  = (254,243,217, 200)
+
+            self.COMPONENT_COLOR = (17,17,18,255)
+
+            self.BUTTON_BG_COLOR1      = (248,219,159, 255)
+            self.BUTTON_BG_COLOR2      = (248,240,207, 255)
+            self.BUTTON_HOVER_COLOR    = (242,235,213, 255)
+            self.BUTTON_SIDE_COLOR = (77,100,115, 255)
+
+            self.SWITCH_BORDER_COLOR1 = (212,190,208,255)
+            self.SWITCH_BORDER_COLOR2 = (142,120,138,255)
+
+            self.SLIDER_BG_COLOR = (238,224,187,255)
+            self.SLIDER_BAR_COLOR = (141,102,82,255)
+            self.SLIDER_TRACK_COLOR = (243,209,91, 255)
+
+            self.TEXT_COLOR = (57,44,67, 255)
+            self.updateWindowBackground()
+
+        if tid == 2: #春
+            self.BASE_WINDOW_COLOR       = (29,54,40,255)
+            self.INFO_WINDOW_COLOR       = (37,38,37,255)
+            self.ITEM_WINDOW_COLOR       = (30,30,30,255)
+            self.STATE_WINDOW_COLOR      = (168,188,111,255)
+            self.MENU_WINDOW_COLOR       = (168,188,111,255)
+            self.COMPONENT_WINDOW_COLOR1 = (222,234,179)
+            self.COMPONENT_WINDOW_COLOR2 = (198,228,141)
+
+            self.BUTTON_LIST_BG_COLOR1   = (240,248,207,205)
+            self.BUTTON_LIST_BG_COLOR2   = (218,233,175)
+
+            self.LIST_BUTTON_BG_COLOR1   = (211,241,168,205)
+            self.LIST_BUTTON_BG_COLOR2   = (196,240,150,205)
+            self.LIST_BUTTON_BG_COLOR    = (243,254,217, 200)
+
+            self.COMPONENT_COLOR         = (17,18,17,255)
+
+            self.BUTTON_BG_COLOR1        = (219,248,159, 255)
+            self.BUTTON_BG_COLOR2        = (240,248,207, 255)
+            self.BUTTON_HOVER_COLOR      = (235,242,213, 255)
+            self.BUTTON_SIDE_COLOR       = (100,115,77, 255)
+
+            self.SWITCH_BORDER_COLOR1    = (190,212,208,255)
+            self.SWITCH_BORDER_COLOR2    = (120,142,138,255)
+
+            self.SLIDER_BG_COLOR         = (224,238,187,255)
+            self.SLIDER_BAR_COLOR        = (102,141,82,255)
+            self.SLIDER_TRACK_COLOR      = (209,243,91, 255)
+            self.TEXT_COLOR              = (57,44,67, 255)
+            self.updateWindowBackground()
+        
+        if tid == 3: #夏
+            self.BASE_WINDOW_COLOR       = (29,174,174,255)
+            self.INFO_WINDOW_COLOR       = (37,185,185,255)
+            self.ITEM_WINDOW_COLOR       = (30,190,190,255)
+            self.STATE_WINDOW_COLOR      = (188,222,111,255)
+            self.MENU_WINDOW_COLOR       = (188,222,111,255)
+            self.COMPONENT_WINDOW_COLOR1 = (179,234,222)
+            self.COMPONENT_WINDOW_COLOR2 = (141,228,198)
+
+            self.BUTTON_LIST_BG_COLOR1   = (207,248,240,205)
+            self.BUTTON_LIST_BG_COLOR2   = (175,233,218)
+
+            self.LIST_BUTTON_BG_COLOR1   = (168,241,211,205)
+            self.LIST_BUTTON_BG_COLOR2   = (150,240,196,205)
+            self.LIST_BUTTON_BG_COLOR    = (217,254,243, 200)
+
+            self.COMPONENT_COLOR         = (18,17,17,255)
+
+            self.BUTTON_BG_COLOR1        = (159,248,219, 255)
+            self.BUTTON_BG_COLOR2        = (207,248,240, 255)
+            self.BUTTON_HOVER_COLOR      = (213,242,235, 255)
+            self.BUTTON_SIDE_COLOR       = (115,100,77, 255)
+
+            self.SWITCH_BORDER_COLOR1    = (208,212,190,255)
+            self.SWITCH_BORDER_COLOR2    = (138,142,120,255)
+
+            self.SLIDER_BG_COLOR         = (187,238,224,255)
+            self.SLIDER_BAR_COLOR        = (82,141,102,255)
+            self.SLIDER_TRACK_COLOR      = (91,243,209, 255)
+            self.TEXT_COLOR = (18,17,17,255)
+
+            self.updateWindowBackground()
+        
+        if tid == 4: #冬
+            self.BASE_WINDOW_COLOR       = (29,40,54,255)
+            self.INFO_WINDOW_COLOR       = (37,37,38,255)
+            self.ITEM_WINDOW_COLOR       = (30,30,30,255)
+            self.STATE_WINDOW_COLOR      = (111,168,188,255)
+            self.MENU_WINDOW_COLOR       = (111,168,188,255)
+            self.COMPONENT_WINDOW_COLOR1 = (235,235,235,255)  # Adjusted to a lighter color
+            self.COMPONENT_WINDOW_COLOR2 = (210,210,210,255)  # Adjusted to a lighter color
+
+            self.BUTTON_LIST_BG_COLOR1   = (207,240,248,205)
+            self.BUTTON_LIST_BG_COLOR2   = (175,218,233)
+
+            self.LIST_BUTTON_BG_COLOR1   = (168,211,241,205)
+            self.LIST_BUTTON_BG_COLOR2   = (150,196,240,205)
+            self.LIST_BUTTON_BG_COLOR    = (217,243,254, 200)
+
+            self.COMPONENT_COLOR         = (17,17,18,255)
+
+            self.BUTTON_BG_COLOR1        = (159,219,248, 255)
+            self.BUTTON_BG_COLOR2        = (207,240,248, 255)
+            self.BUTTON_HOVER_COLOR      = (213,235,242, 255)
+            self.BUTTON_SIDE_COLOR       = (77,100,115, 255)
+
+            self.SWITCH_BORDER_COLOR1    = (208,190,212,255)
+            self.SWITCH_BORDER_COLOR2    = (138,120,142,255)
+
+            self.SLIDER_BG_COLOR         = (187,224,238,255)
+            self.SLIDER_BAR_COLOR        = (82,102,141,255)
+            self.SLIDER_TRACK_COLOR      = (91,209,243, 255)
+            self.TEXT_COLOR              = (57,44,67,255)
+            self.updateWindowBackground()
+
+        if tid == 5: # 湛蓝之海
+            self.BASE_WINDOW_COLOR       = (25,25,112,255) 
+            self.INFO_WINDOW_COLOR       = (0,0,128,255) 
+            self.ITEM_WINDOW_COLOR       = (0,0,139,255)  
+            self.STATE_WINDOW_COLOR      = (0,0,156,255)  
+            self.MENU_WINDOW_COLOR       = (0,0,205,255) 
+            self.COMPONENT_WINDOW_COLOR1 = (0,0,255,255) 
+            self.COMPONENT_WINDOW_COLOR2 = (70,130,180,255) 
+
+            self.BUTTON_LIST_BG_COLOR1   = (100,149,237,205)  
+            self.BUTTON_LIST_BG_COLOR2   = (135,206,235,205)  
+
+            self.LIST_BUTTON_BG_COLOR1   = (100,149,237,205)  
+            self.LIST_BUTTON_BG_COLOR2   = (240,248,255,205) 
+            self.LIST_BUTTON_BG_COLOR    = (100,149,237,205)
+
+            self.COMPONENT_COLOR         = (70,130,180,255) 
+
+            self.BUTTON_BG_COLOR1        = (0,191,255, 255)  
+            self.BUTTON_BG_COLOR2        = (30,144,255, 255)  
+            self.BUTTON_HOVER_COLOR      = (70,130,180, 255)  
+            self.BUTTON_SIDE_COLOR       = (25,25,112, 255) 
+
+            self.SWITCH_BORDER_COLOR1    = (240,248,255,255)
+            self.SWITCH_BORDER_COLOR2    = (240,248,255,255)  
+
+            self.SLIDER_BG_COLOR         = (70,130,180,255)  
+            self.SLIDER_BAR_COLOR        = (25,25,112,255) 
+            self.SLIDER_TRACK_COLOR      = (0,191,255, 255)
+
+            self.TEXT_COLOR              = (240,248,255,255)
+            self.updateWindowBackground()
+        
+        
+        if tid == 6: # 粉色
+            self.BASE_WINDOW_COLOR       = (255,223,236,255)  
+            self.INFO_WINDOW_COLOR       = (255,174,201,255)  
+            self.ITEM_WINDOW_COLOR       = (255,105,180,255)  
+            self.STATE_WINDOW_COLOR      = (234,153,153,255)  
+            self.MENU_WINDOW_COLOR       = (255,204,229,255)  
+            self.COMPONENT_WINDOW_COLOR1 = (255,174,201,255)  
+            self.COMPONENT_WINDOW_COLOR2 = (255,105,180,255)  
+
+            self.BUTTON_LIST_BG_COLOR1   = (255,223,236,205)  
+            self.BUTTON_LIST_BG_COLOR2   = (255,174,201,205)  
+
+            self.LIST_BUTTON_BG_COLOR1   = (255,223,236,205)  
+            self.LIST_BUTTON_BG_COLOR2   = (255,174,201,205)  
+            self.LIST_BUTTON_BG_COLOR    = (255,204,229,200)  
+
+            self.COMPONENT_COLOR         = (255,174,201,255)  
+
+            self.BUTTON_BG_COLOR1        = (255,105,180,255)  
+            self.BUTTON_BG_COLOR2        = (234,153,153,255)  
+            self.BUTTON_HOVER_COLOR      = (255,174,201,255)  
+            self.BUTTON_SIDE_COLOR       = (255,223,236,255)  
+
+            self.SWITCH_BORDER_COLOR1    = (255,223,236,255)  
+            self.SWITCH_BORDER_COLOR2    = (255,174,201,255)  
+
+            self.SLIDER_BG_COLOR         = (255,174,201,255)  
+            self.SLIDER_BAR_COLOR        = (255,223,236,255)  
+            self.SLIDER_TRACK_COLOR      = (255,105,180,255)  
+
+            self.TEXT_COLOR              = (0,0,0,255) 
+
+            self.updateWindowBackground()
+        
+        
+        if tid == 7: #静谧夜空
+            self.BASE_WINDOW_COLOR       = (0,0,50,255)     # Deeper midnight blue
+            self.INFO_WINDOW_COLOR       = (0,0,40,255)     # Deeper navy
+            self.ITEM_WINDOW_COLOR       = (0,0,30,255)     # Even deeper blue
+            self.STATE_WINDOW_COLOR      = (0,0,20,255)     # Extremely deep blue
+            self.MENU_WINDOW_COLOR       = (0,0,60,255)     # Slightly lighter deep blue
+
+            self.COMPONENT_WINDOW_COLOR1 = (0,0,40,255)     # Deeper navy
+            self.COMPONENT_WINDOW_COLOR2 = (0,0,50,255)     # Deeper midnight blue
+
+            self.BUTTON_LIST_BG_COLOR1   = (0,0,60,205)     # Slightly lighter deep blue
+            self.BUTTON_LIST_BG_COLOR2   = (0,0,30,205)     # Even deeper blue
+
+            self.LIST_BUTTON_BG_COLOR1   = (0,0,60,205)     # Slightly lighter deep blue
+            self.LIST_BUTTON_BG_COLOR2   = (0,0,30,205)     # Even deeper blue
+            self.LIST_BUTTON_BG_COLOR    = (0,0,50,200)     # Deeper midnight blue
+
+            self.COMPONENT_COLOR         = (0,0,40,255)     # Deeper navy
+
+            self.BUTTON_BG_COLOR1        = (0,0,30,255)     # Even deeper blue
+            self.BUTTON_BG_COLOR2        = (0,0,50,255)     # Deeper midnight blue
+            self.BUTTON_HOVER_COLOR      = (0,0,60,255)     # Slightly lighter deep blue
+            self.BUTTON_SIDE_COLOR       = (0,0,20,255)     # Extremely deep blue
+
+            self.SWITCH_BORDER_COLOR1    = (0,0,50,255)     # Deeper midnight blue
+            self.SWITCH_BORDER_COLOR2    = (0,0,40,255)     # Deeper navy
+
+            self.SLIDER_BG_COLOR         = (0,0,40,255)     # Deeper navy
+            self.SLIDER_BAR_COLOR        = (255,255,160,255)     # Slightly lighter deep blue
+            self.SLIDER_TRACK_COLOR      = (55,125,55,255)     # Deeper midnight blue
+
+            self.TEXT_COLOR              = (255,255,235,255)  # White for better contrast
+
+            self.updateWindowBackground()
 
                 
 

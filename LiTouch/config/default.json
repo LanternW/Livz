@@ -5,6 +5,7 @@
             "title": "LiTouch",
             "width": 800,
             "height": 600,
+            "theme": 1,
             "components": [
                 {
                     "type": "label",

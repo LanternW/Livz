@@ -305,7 +305,7 @@ class Label(Component):
 
 
 class Switch(Component):
-    def __init__(self, coord, size, callback, title = "switch", on_color = gol.SWITCH_BORDER_COLOR2, cid = -1) -> None:
+    def __init__(self, coord, size, callback, title = "switch", on_color = gol.TEXT_COLOR, cid = -1) -> None:
         super().__init__(coord, size, cid)
         self.title      = title
         self.on_color   = on_color
@@ -330,9 +330,9 @@ class Switch(Component):
             renderCornerRect( self.canvas, self.pass_color, (0,0), self.size, 0)
 
         if self.on == True:
-            renderCornerRect( self.canvas, self.on_color, (0,0), self.size , 4)
+            renderCornerRect( self.canvas, self.color, (0,0), self.size , 4)
         else:
-            renderCornerRect( self.canvas, self.on_color, (0,-3), (w,h+6) , 4)
+            renderCornerRect( self.canvas, self.color, (0,-3), (w,h+6) , 2)
         
 
         font_size = h * 0.9
