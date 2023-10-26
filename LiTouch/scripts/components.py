@@ -599,8 +599,9 @@ class Slider(Component):
 
         slider_position = ((self.current_value - self.min_value) / (self.max_value - self.min_value)) * (w-self.slider_width)
 
-        renderCornerRect(self.canvas, self.slider_color, (0, my - 0.5*puil_h), (slider_position, puil_h), 0)
-        pygame.draw.rect(self.canvas, self.slider_color, (slider_position, 0, self.slider_width, h))
+        renderCornerRect(self.canvas, gol.SLIDER_BAR_COLOR, (0, my - 0.5*puil_h), (slider_position, puil_h), 0)
+        pygame.draw.rect(self.canvas, gol.SLIDER_BAR_COLOR, (slider_position, 0, self.slider_width, h))
+
 
 
         font_size = h * 0.6
@@ -615,9 +616,9 @@ class Slider(Component):
             pygame.draw.rect(self.canvas, self.pass_color, (slider_position, 0, self.slider_width, h))
             mid_value = 0.5 * ( self.min_value +  self.max_value )
             if self.current_value < mid_value:
-                blitTextLeft(self.canvas, float_to_str(self.current_value), font, (slider_position +  self.slider_width , 0.4*real_size), self.slider_color)
+                blitTextLeft(self.canvas, float_to_str(self.current_value), font, (slider_position +  self.slider_width , 0.4*real_size), gol.SLIDER_BAR_COLOR)
             else:
-                blitTextRight(self.canvas, float_to_str(self.current_value), font, (slider_position , 0.4*real_size), self.slider_color)
+                blitTextRight(self.canvas, float_to_str(self.current_value), font, (slider_position , 0.4*real_size), gol.SLIDER_BAR_COLOR)
 
 
 

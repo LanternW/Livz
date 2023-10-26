@@ -136,8 +136,8 @@ class Gol():
         self.SWITCH_BORDER_COLOR1 = (212,190,208,255)
         self.SWITCH_BORDER_COLOR2 = (142,120,138,255)
 
-        self.SLIDER_BG_COLOR = (238,224,187,255)
-        self.SLIDER_BAR_COLOR = (141,102,82,255)
+        self.SLIDER_BG_COLOR  = (238,224,187,255)
+        self.SLIDER_BAR_COLOR = (171,102,82,255)
         self.SLIDER_TRACK_COLOR = (243,209,91, 255)
 
         self.STACK_LINE_COLOR   = (130,130,255,255)
@@ -221,8 +221,8 @@ class Gol():
             self.SWITCH_BORDER_COLOR1 = (212,190,208,255)
             self.SWITCH_BORDER_COLOR2 = (142,120,138,255)
 
-            self.SLIDER_BG_COLOR = (238,224,187,255)
-            self.SLIDER_BAR_COLOR = (141,102,82,255)
+            self.SLIDER_BG_COLOR  = (238,224,187,255)
+            self.SLIDER_BAR_COLOR = (171,102,82,255)
             self.SLIDER_TRACK_COLOR = (243,209,91, 255)
 
             self.TEXT_COLOR = (57,44,67, 255)

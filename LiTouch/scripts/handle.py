@@ -157,7 +157,7 @@ def scanAllActionFuncs():
         window_data      = ui_data["window"]
 
 
-        window_theme     = window_data.get("theme", 1)
+        window_theme        = window_data.get("theme", 1)
         gol.current_theme   = window_theme
         gol.changeTheme(window_theme)
         # scan components action
@@ -189,6 +189,7 @@ def readConfig():
         window_width     = window_data["width"]
         window_height    = window_data["height"]
         window_height    = max(50, window_height)
+
 
 
         gol.APP_WIDTH        = window_width
