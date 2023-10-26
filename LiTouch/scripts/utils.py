@@ -222,10 +222,8 @@ def create_soft_shadow(width, height, radius=0.5, blur=10):
     width = int(width)
     height = int(height)
     abs_radius = int(min(width, height)*radius/2)
-    def getSDF(x,y):
+    def getSDF(x,y, dx,dy):
         sdf = 0
-        dx = min(x, width - x)
-        dy = min(y , height - y)
         if dx < abs_radius and dy < abs_radius:
             rmin = math.sqrt( (x-abs_radius)*(x-abs_radius) + (y-abs_radius)*(y-abs_radius) )                   
             rmin = min(rmin, math.sqrt( (x - width + abs_radius)*(x-width + abs_radius) + (y-abs_radius)*(y-abs_radius)) )
@@ -242,7 +240,13 @@ def create_soft_shadow(width, height, radius=0.5, blur=10):
     # surface.fill((40,40,40,50))
     for y in range(height):
         for x in range(width):
-            sdf   = getSDF(x,y)
+            dx = min(x, width - x)
+            dy = min(y , height - y)
+            kmin = min(dx, dy)
+            if (kmin > 20):
+                continue
+
+            sdf   = getSDF(x,y, dx, dy)
             alpha = int( min(255, max(0, (-255 * sdf / blur) )))
             color = (161,131,125,alpha)
             surface.set_at((x, y), color)

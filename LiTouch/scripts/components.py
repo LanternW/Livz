@@ -545,6 +545,7 @@ class ButtonList(Component):
             button.canvas_size = (x, button.canvas_size[1])
         
         self.static_back_surf   = create_gradient_surface_with_radius(new_size[0], new_size[1], gol.BUTTON_LIST_BG_COLOR1, gol.BUTTON_LIST_BG_COLOR2 , radius=self.radius)
+        self.mask               = pygame.Surface((new_size[0], new_size[1]), pygame.SRCALPHA)
         self.need_regene_shadow = True
 
     def onMouseClick(self, mouse_x, mouse_y, btn):
