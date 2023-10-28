@@ -345,7 +345,7 @@ class Switch(Component):
             surface.blit(self.card_out_shadow , (x-10, y + 10) )
         
         if(self.OnModify == False and self.need_regene_shadow == True):
-            self.card_out_shadow  = create_soft_shadow(self.size[0], self.size[1], radius=self.radius, blur=60)
+            self.card_out_shadow  = create_soft_shadow(self.size[0], self.size[1], radius=0.0, blur=60)
             self.need_regene_shadow = False
 
         super().postRender(surface)
