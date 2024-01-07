@@ -30,6 +30,10 @@ def scanComponentAction(type, component):
         act   = component["action"]
         action_funcs[act] = "slider"
     
+    if type == "rocker2d":
+        act   = component["action"]
+        action_funcs[act] = "rocker2d"
+
     if type == "button_list":
         list_buttons = component["buttons"]
         for list_btn in list_buttons:
@@ -87,6 +91,19 @@ def appendComponent(type, component, module):
         maxv  = component["max"]
         function = getattr(module, act)
         gol.components.append( Slider((x,y), (w,h), minv, maxv, function, label , cid=cid) )
+    
+    if type == "rocker2d":
+        label = component["label"]
+        rtype = component["kind"]
+        cid   = component["cid"]
+        x     = component["x"]
+        y     = component["y"]
+        w     = component["width"]
+        h     = component["height"]
+        act   = component["action"]
+        maxv  = component["max"]
+        function = getattr(module, act)
+        gol.components.append( Rocker2D((x,y), (w,h), maxv, function, rtype, label , cid=cid) )
     
     if type == "graph":
         label = component["label"]
@@ -317,6 +334,17 @@ def saveConfig():
             component_dict["min"] = component.min_value
             component_dict["max"] = component.max_value
             component_dict["action"] = component.callback.__name__
+        
+
+        elif isinstance(component, Rocker2D):
+            component_dict["type"] = "rocker2d"
+            component_dict["cid"]  = component.cid
+            component_dict["label"] = component.title
+            component_dict["kind"] = component.rocker_type
+            component_dict["x"], component_dict["y"] = component.coord
+            component_dict["width"], component_dict["height"] = component.size
+            component_dict["max"] = component.max_value
+            component_dict["action"] = component.callback.__name__
 
         elif isinstance(component, Graph):
             component_dict["type"] = "graph"
@@ -505,3 +533,6 @@ def init():
 def tick(dt):
     global tick_func
     tick_func(dt)
+
+    for component in gol.components:
+        component.update()

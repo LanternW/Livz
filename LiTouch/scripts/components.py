@@ -152,11 +152,12 @@ class Component():
         ]
 
         self.ResizeCat = 0 
-        # 根据鼠标位置相对于各角落的距离来设置ResizeCat的值
-        for i, (corner_x, corner_y) in enumerate(corners_and_edges):
-            if distance(mouse_x, mouse_y, corner_x, corner_y) < threshold_distance:
-                self.ResizeCat = i + 1 
-                return
+        if input_manager.isKeyDown(pygame.K_LSHIFT):
+            # 根据鼠标位置相对于各角落的距离来设置ResizeCat的值
+            for i, (corner_x, corner_y) in enumerate(corners_and_edges):
+                if distance(mouse_x, mouse_y, corner_x, corner_y) < threshold_distance:
+                    self.ResizeCat = i + 1 
+                    return
         
         # 移动canvas
         # if self.passby:
@@ -652,6 +653,101 @@ class Slider(Component):
             self.current_value = self.min_value + ((self.max_value - self.min_value) * (dx / w))
             self.current_value = max(self.min_value, min(self.max_value, self.current_value))
             self.callback(self.current_value)
+
+
+class Rocker2D(Component):
+    def __init__(self, coord, size, max_value ,callback, rocker_type = 0, title="rocker2D", rocker_color=gol.SLIDER_BAR_COLOR, cid = -1) -> None:
+        super().__init__(coord, size, cid)
+        self.title = title
+        self.rocker_color = rocker_color
+        self.pass_color   = colorGradient(rocker_color, gol.COLOR_WHITE, 0.6)
+        self.color        = gol.TEXT_COLOR
+        self.rocker_radius = min(size[0] * 0.1, 20)
+
+
+        w, h   = self.size
+        mx, my = 0.5 * w, 0.5 * h
+        cx,cy  = self.coord
+        self.center = (cx + mx, cy + my)
+        self.min_size = min(w,h)
+
+        self.max_value = max_value
+        self.callback  = callback
+
+
+        self.rocker_type     = rocker_type # 0-自动回弹 ， 1-不回弹
+        self.current_value_x = max_value / 2
+        self.current_value_y = max_value / 2
+
+        self.dragging = False
+
+    def preRender(self):
+        super().preRender()
+        self.canvas.fill(gol.SLIDER_BG_COLOR)
+        renderCircle(self.canvas, self.rocker_color, self.center, self.min_size, 3)
+
+        w, h   = self.size
+        mx, my = 0.5 * w, 0.5 * h
+
+        rx = mx + self.min_size * (self.current_value_x / self.max_value - 0.5)
+        ry = my - self.min_size * ((self.max_value - self.current_value_y) / self.max_value - 0.5)
+        renderLine(self.canvas, self.color, (mx - self.min_size, my ), (mx + self.min_size, my ), 2)
+        renderLine(self.canvas, self.color, (mx , my - self.min_size), (mx , my + self.min_size), 2)
+        renderCircle(self.canvas, self.rocker_color, (rx,ry), self.rocker_radius, 0)
+
+
+        if self.passby:
+            renderCircle(self.canvas, self.pass_color, (rx,ry), self.rocker_radius, 0)
+
+
+
+    def onResize(self, new_size):
+        super().onResize(new_size)
+        self.canvas_size  = self.size
+        self.rocker_radius = min(self.size[0] * 0.1, 20)
+        w, h   = self.size
+        mx, my = 0.5 * w, 0.5 * h
+        cx,cy  = self.coord
+        self.center = (cx + mx, cy + my)
+        self.min_size = min(w,h)
+
+    def onMouseClick(self, mouse_x, mouse_y, btn):
+        super().onMouseClick(mouse_x, mouse_y, btn)
+        if self.OnModify == True:
+            return 
+        
+        if self.passby:
+            if btn == gol.MOUSEBUTTON_LEFT:
+                self.dragging = True
+
+    def onMouseUp(self, mouse_x, mouse_y, btn):
+        super().onMouseUp(mouse_x, mouse_y, btn)
+        if btn == gol.MOUSEBUTTON_LEFT:
+            self.dragging = False
+            if self.rocker_type == 0: # 回弹版本
+                self.current_value_x = self.max_value / 2
+                self.current_value_y = self.max_value / 2
+                self.callback([self.current_value_x, self.current_value_y])
+
+
+
+    def onMouseMotion(self, mouse_x, mouse_y):
+        super().onMouseMotion(mouse_x, mouse_y)
+        if self.dragging:
+            cx, cy = self.center
+            dx = mouse_x - cx
+            dy = mouse_y - cy
+            x_perc = max(0, min((dx / self.min_size) + 0.5, 1))
+            y_perc = max(0, min((dy / self.min_size) + 0.5, 1))
+            self.current_value_x = self.max_value * x_perc
+            self.current_value_y = self.max_value * y_perc
+            self.callback([self.current_value_x, self.current_value_y])
+    
+    def update(self):
+        if self.rocker_type == 0 and self.dragging == True:
+            self.callback([self.current_value_x, self.current_value_y])
+
+
 
 
 class Graph(Component):
